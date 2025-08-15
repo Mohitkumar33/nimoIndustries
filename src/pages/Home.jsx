@@ -1,36 +1,42 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Container, Typography, CircularProgress } from "@mui/material";
 import CryptoTable from "../components/CryptoTable";
+import { getMarketData } from "../api/allApis"; // ✅ import the function
 
 export default function Home() {
   const [coins, setCoins] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("https://api.coingecko.com/api/v3/coins/markets", {
-        params: {
-          vs_currency: "usd",
-          order: "market_cap_desc",
-          per_page: 10,
-          page: 1,
-          sparkline: false,
-        },
-      })
-      .then((res) => {
-        setCoins(res.data);
+    const coinsData = async () => {
+      try {
+        setLoading(true);
+        const data = await getMarketData();
+        setCoins(data);
+        console.log(data);
+      } catch (err) {
+        setError("Failed to fetch cryptocurrency data.");
+      } finally {
         setLoading(false);
-      });
-    console.log("Hi");
+      }
+    };
+    coinsData();
   }, []);
 
   if (loading)
-    return <CircularProgress sx={{ display: "block", m: "2rem auto" }} />;
+    return <CircularProgress sx={{ display: "block", margin: "2rem auto" }} />;
+
+  if (error)
+    return (
+      <Typography color="error" sx={{ textAlign: "center", mt: 4 }}>
+        {error}
+      </Typography>
+    );
 
   return (
-    <Container>
-      <Typography variant="h4" sx={{ my: 3 }}>
+    <Container sx={{ mt: 4 }}>
+      <Typography variant="h4" sx={{ mb: 3, textAlign: "center" }}>
         Top 10 Cryptocurrencies
       </Typography>
       <CryptoTable coins={coins} />
