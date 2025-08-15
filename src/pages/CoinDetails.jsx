@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Typography, CircularProgress, Box } from "@mui/material";
-import { getSingleCoinData } from "../api/allApis"; // ✅ import your function
+import {
+  Container,
+  Typography,
+  CircularProgress,
+  Box,
+  Grid,
+  Paper,
+} from "@mui/material";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { getSingleCoinData } from "../api/allApis";
 
 export default function CoinDetail() {
   const { id } = useParams();
@@ -37,6 +45,12 @@ export default function CoinDetail() {
 
   if (!coin) return null;
 
+  // Prepare 7-day sparkline data
+  const chartData = coin.market_data.sparkline_7d.price.map((price, index) => ({
+    time: index,
+    price: price,
+  }));
+
   return (
     <Container sx={{ mt: 4 }}>
       {/* Coin Header */}
@@ -52,33 +66,53 @@ export default function CoinDetail() {
       </Box>
 
       {/* Coin Market Data */}
-      <Typography variant="h6">
-        Current Price: ${coin.market_data.current_price.usd.toLocaleString()}
-      </Typography>
-      <Typography>
-        Market Cap: ${coin.market_data.market_cap.usd.toLocaleString()}
-      </Typography>
-      <Typography>
-        24h High: ${coin.market_data.high_24h.usd.toLocaleString()}
-      </Typography>
-      <Typography>
-        24h Low: ${coin.market_data.low_24h.usd.toLocaleString()}
-      </Typography>
-      <Typography>
-        Circulating Supply:{" "}
-        {coin.market_data.circulating_supply.toLocaleString()}
-      </Typography>
-      <Typography>
-        Total Supply: {coin.market_data.total_supply?.toLocaleString() || "N/A"}
-      </Typography>
-      <Typography>
-        All Time High: ${coin.market_data.ath.usd.toLocaleString()} (
-        {coin.market_data.ath_change_percentage.usd.toFixed(2)}%)
-      </Typography>
-      <Typography>
-        All Time Low: ${coin.market_data.atl.usd.toLocaleString()} (
-        {coin.market_data.atl_change_percentage.usd.toFixed(2)}%)
-      </Typography>
+      <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper sx={{ p: 2 }}>
+            <Typography>Current Price</Typography>
+            <Typography variant="h6">${coin.market_data.current_price.usd.toLocaleString()}</Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper sx={{ p: 2 }}>
+            <Typography>1h Change</Typography>
+            <Typography variant="h6" color={coin.market_data.price_change_percentage_1h_in_currency.usd >= 0 ? "green" : "red"}>
+              {coin.market_data.price_change_percentage_1h_in_currency.usd?.toFixed(2)}%
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper sx={{ p: 2 }}>
+            <Typography>24h Change</Typography>
+            <Typography variant="h6" color={coin.market_data.price_change_percentage_24h >= 0 ? "green" : "red"}>
+              {coin.market_data.price_change_percentage_24h?.toFixed(2)}%
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Paper sx={{ p: 2 }}>
+            <Typography>7d Change</Typography>
+            <Typography variant="h6" color={coin.market_data.price_change_percentage_7d_in_currency.usd >= 0 ? "green" : "red"}>
+              {coin.market_data.price_change_percentage_7d_in_currency.usd?.toFixed(2)}%
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
+
+      {/* 7-Day Price Chart */}
+      <Box sx={{ height: 300 }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Last 7 Days Price
+        </Typography>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData}>
+            <XAxis dataKey="time" hide />
+            <YAxis domain={['auto', 'auto']} />
+            <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+            <Line type="monotone" dataKey="price" stroke="#1976d2" dot={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      </Box>
     </Container>
   );
 }

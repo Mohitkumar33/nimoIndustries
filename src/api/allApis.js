@@ -9,7 +9,8 @@ export const getMarketData = async () => {
         order: "market_cap_desc",
         per_page: 10,
         page: 1,
-        sparkline: false,
+        sparkline: true,
+        price_change_percentage: "1h,24h,7d",
       },
     });
     return response.data;
