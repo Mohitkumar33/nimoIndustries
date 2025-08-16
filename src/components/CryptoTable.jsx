@@ -11,11 +11,12 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Sparklines, SparklinesLine } from "react-sparklines";
+import "../../styles/CryptoTable.css";
 
 export default function CryptoTable({ coins }) {
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table className="customTable">
         <TableHead>
           <TableRow>
             <TableCell>#</TableCell>
@@ -102,12 +103,12 @@ export default function CryptoTable({ coins }) {
               <TableCell>${coin.market_cap.toLocaleString()}</TableCell>
 
               {/* Sparkline for last 7 days */}
-              <TableCell>
+              <TableCell sx={{ width: 160 }}>
                 {coin.sparkline_in_7d && (
                   <Sparklines
                     data={coin.sparkline_in_7d.price}
-                    width={100}
-                    height={30}
+                    width={130}
+                    height={50}
                   >
                     <SparklinesLine
                       color={
