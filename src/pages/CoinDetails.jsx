@@ -211,8 +211,26 @@ export default function CoinDetail() {
               <TableRow>
                 <TableCell>All-Time High</TableCell>
                 <TableCell>
-                  ${coin.market_data.ath.usd.toFixed(2)} (
-                  {coin.market_data.ath_change_percentage.usd.toFixed(2)}%){" "}
+                  ${coin.market_data.ath.usd.toFixed(2)}{" "}
+                  <span
+                    style={{
+                      color:
+                        coin.market_data.ath_change_percentage.usd >= 0
+                          ? "green"
+                          : "red",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "2px",
+                    }}
+                  >
+                    {coin.market_data.ath_change_percentage.usd >= 0
+                      ? "▲"
+                      : "▼"}
+                    {Math.abs(
+                      coin.market_data.ath_change_percentage.usd
+                    ).toFixed(2)}
+                    %
+                  </span>
                   <br />
                   {dayjs(coin.market_data.ath_date.usd).format("MMM D, YYYY")}
                 </TableCell>
@@ -220,8 +238,26 @@ export default function CoinDetail() {
               <TableRow>
                 <TableCell>All-Time Low</TableCell>
                 <TableCell>
-                  ${coin.market_data.atl.usd.toFixed(6)} (
-                  {coin.market_data.atl_change_percentage.usd.toFixed(2)}%){" "}
+                  ${coin.market_data.atl.usd.toFixed(6)}{" "}
+                  <span
+                    style={{
+                      color:
+                        coin.market_data.atl_change_percentage.usd >= 0
+                          ? "green"
+                          : "red",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "2px",
+                    }}
+                  >
+                    {coin.market_data.atl_change_percentage.usd >= 0
+                      ? "▲"
+                      : "▼"}
+                    {Math.abs(
+                      coin.market_data.atl_change_percentage.usd
+                    ).toFixed(2)}
+                    %
+                  </span>
                   <br />
                   {dayjs(coin.market_data.atl_date.usd).format("MMM D, YYYY")}
                 </TableCell>
