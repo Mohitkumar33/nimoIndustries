@@ -39,12 +39,14 @@ A React + Vite cryptocurrency dashboard that displays real-time crypto prices, c
 ````bash
 git clone https://github.com/Mohitkumar33/nimoIndustries.git
 cd nimoIndustries
+````
 
 2. **Install dependencies**
-```bash
+````bash
 npm install
+````
 
 3. **Run the development server**
-```bash
+````bash
 npm run dev
 ````
