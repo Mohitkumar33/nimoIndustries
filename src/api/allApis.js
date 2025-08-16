@@ -1,14 +1,14 @@
 // src/api/allApis.js
 import axiosInstance from "./axiosInstance";
 
-export const getMarketData = async () => {
+export const getMarketData = async (page = 1, perPage = 10) => {
   try {
     const response = await axiosInstance.get("/coins/markets", {
       params: {
         vs_currency: "usd",
         order: "market_cap_desc",
-        per_page: 10,
-        page: 1,
+        per_page: perPage,
+        page: page,
         sparkline: true,
         price_change_percentage: "1h,24h,7d",
       },

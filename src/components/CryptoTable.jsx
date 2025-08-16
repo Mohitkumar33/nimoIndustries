@@ -53,6 +53,7 @@ export default function CryptoTable({ coins }) {
               </TableCell>
               <TableCell>${coin.current_price.toLocaleString()}</TableCell>
 
+              {/* 1h % */}
               <TableCell
                 sx={{
                   color:
@@ -63,18 +64,26 @@ export default function CryptoTable({ coins }) {
               >
                 {coin.price_change_percentage_1h_in_currency
                   ? coin.price_change_percentage_1h_in_currency.toFixed(2)
-                  : "N/A"}
+                  : 0}
                 %
               </TableCell>
 
+              {/* 24h % */}
               <TableCell
                 sx={{
-                  color: coin.price_change_percentage_24h > 0 ? "green" : "red",
+                  color:
+                    coin.price_change_percentage_24h_in_currency > 0
+                      ? "green"
+                      : "red",
                 }}
               >
-                {coin.price_change_percentage_24h.toFixed(2)}%
+                {coin.price_change_percentage_24h_in_currency
+                  ? coin.price_change_percentage_24h_in_currency.toFixed(2)
+                  : 0}
+                %
               </TableCell>
 
+              {/* 7d % */}
               <TableCell
                 sx={{
                   color:
@@ -85,14 +94,16 @@ export default function CryptoTable({ coins }) {
               >
                 {coin.price_change_percentage_7d_in_currency
                   ? coin.price_change_percentage_7d_in_currency.toFixed(2)
-                  : "N/A"}
+                  : 0}
                 %
               </TableCell>
 
               <TableCell>${coin.total_volume.toLocaleString()}</TableCell>
               <TableCell>${coin.market_cap.toLocaleString()}</TableCell>
+
+              {/* Sparkline for last 7 days */}
               <TableCell>
-                {coin.sparkline_in_7d ? (
+                {coin.sparkline_in_7d && (
                   <Sparklines
                     data={coin.sparkline_in_7d.price}
                     width={100}
@@ -106,8 +117,6 @@ export default function CryptoTable({ coins }) {
                       }
                     />
                   </Sparklines>
-                ) : (
-                  "N/A"
                 )}
               </TableCell>
             </TableRow>
