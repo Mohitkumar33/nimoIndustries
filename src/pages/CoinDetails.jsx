@@ -21,6 +21,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import dayjs from "dayjs";
+import { Table, TableBody, TableRow, TableCell } from "@mui/material";
 import { getSingleCoinData } from "../api/allApis";
 
 export default function CoinDetail() {
@@ -184,6 +185,50 @@ export default function CoinDetail() {
             />
           </AreaChart>
         </ResponsiveContainer>
+      </Box>
+
+      <Box sx={{ mt: 8, mb: 4 }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Historical Price
+        </Typography>
+        <Paper sx={{ p: 2 }}>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>24h Range</TableCell>
+                <TableCell>
+                  ${coin.market_data.high_24h.usd.toFixed(2)} – $
+                  {coin.market_data.low_24h.usd.toFixed(2)}
+                </TableCell>
+              </TableRow>
+              {/* <TableRow>
+                <TableCell>7d Range</TableCell>
+                <TableCell>
+                  ${coin.market_data.high_7d?.usd?.toFixed(2) || "-"} – $
+                  {coin.market_data.low_7d?.usd?.toFixed(2) || "-"}
+                </TableCell>
+              </TableRow> */}
+              <TableRow>
+                <TableCell>All-Time High</TableCell>
+                <TableCell>
+                  ${coin.market_data.ath.usd.toFixed(2)} (
+                  {coin.market_data.ath_change_percentage.usd.toFixed(2)}%){" "}
+                  <br />
+                  {dayjs(coin.market_data.ath_date.usd).format("MMM D, YYYY")}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>All-Time Low</TableCell>
+                <TableCell>
+                  ${coin.market_data.atl.usd.toFixed(6)} (
+                  {coin.market_data.atl_change_percentage.usd.toFixed(2)}%){" "}
+                  <br />
+                  {dayjs(coin.market_data.atl_date.usd).format("MMM D, YYYY")}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Paper>
       </Box>
     </Container>
   );
