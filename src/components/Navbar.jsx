@@ -38,28 +38,51 @@ export default function Navbar() {
         {/* Navigation Links */}
         <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
           {[
-            "Cryptocurrencies",
-            "Exchanges",
-            "NFT",
-            "Learn",
-            "API",
-            "Portfolio",
-          ].map((item) => (
-            <Button
-              key={item}
-              component={Link}
-              to={`/`}
-              sx={{
-                color: "#fff",
-                textTransform: "none",
-                "&:hover": {
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                },
-              }}
-            >
-              {item}
-            </Button>
-          ))}
+            { label: "Cryptocurrencies", path: "/" },
+            { label: "Exchanges", path: "/" },
+            { label: "NFT", path: "/" },
+            { label: "Learn", path: "/" },
+            { label: "API", path: "/" },
+            {
+              label: "My Portfolio Website",
+              path: "https://www.mohitkumar.in/",
+              external: true,
+            },
+          ].map((item) =>
+            item.external ? (
+              <Button
+                key={item.label}
+                component="a"
+                href={item.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{
+                  color: "#fff",
+                  textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                  },
+                }}
+              >
+                {item.label}
+              </Button>
+            ) : (
+              <Button
+                key={item.label}
+                component={Link}
+                to={item.path}
+                sx={{
+                  color: "#fff",
+                  textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                  },
+                }}
+              >
+                {item.label}
+              </Button>
+            )
+          )}
         </Box>
 
         {/* Search */}
