@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Sparklines, SparklinesLine } from "react-sparklines";
-import "../../styles/CryptoTable.css";
+import "../styles/CryptoTable.css"; // Assuming you have a CSS file for custom styles
 
 export default function CryptoTable({ coins }) {
   return (
